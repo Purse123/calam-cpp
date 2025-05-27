@@ -47,7 +47,7 @@ int main() {
   
   vec2D p = {100, 200};
   RGBA cyan = {0, 255, 255, 255};
-  putPixel (frameBuffer, WIDTH, HEIGHT, p, cyan);
+  putPixel (frameBuffer, p, cyan);
 
   // rect = NULL, represent area to update, NULL for entire texture
   // const void *pixels = frameBuffer, ray pixel data in texture format
@@ -62,7 +62,15 @@ int main() {
   
   vec2D p1 = {200, 400};
   vec2D p2 = {400, 200};
-  putLine (frameBuffer, WIDTH, HEIGHT, p1, p2, cyan);
+  putLine (frameBuffer, p1, p2, cyan);
+  SDL_UpdateTexture(texture, NULL, frameBuffer, WIDTH * sizeof(uint32_t));
+  SDL_RenderClear(renderer);
+  SDL_RenderCopy(renderer, texture, NULL, NULL);
+  SDL_RenderPresent(renderer);
+
+  vec2D circle_center = {100, 100};
+  int radius = 50;
+  putCircle (frameBuffer, circle_center, radius, cyan);
   SDL_UpdateTexture(texture, NULL, frameBuffer, WIDTH * sizeof(uint32_t));
   SDL_RenderClear(renderer);
   SDL_RenderCopy(renderer, texture, NULL, NULL);

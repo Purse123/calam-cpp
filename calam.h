@@ -17,8 +17,9 @@ struct RGBA {
   u32 r, g, b, a;
 };
 
-void display(void);
-void putPixel(u32* frameBuffer, int width, int height, vec2D p, RGBA color);
-void putLine(u32* frameBuffer, int width, int height, vec2D p1, vec2D p2, RGBA c);
+void display (void);
+void putPixel (u32* frameBuffer, vec2D p, RGBA color);
+void putLine (u32* frameBuffer, vec2D p1, vec2D p2, RGBA c);
+void putCircle (u32* frameBuffer, vec2D center, int radius, RGBA c);
 
 #endif
