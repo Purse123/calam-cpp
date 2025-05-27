@@ -1,0 +1,49 @@
+#include <iostream>
+#include "calam.h"
+
+void display(void) {
+  std::cout << "Hello world" << std::endl;
+}
+
+void putPixel(u32* frameBuffer, int width, int height, vec2D p, RGBA color) {
+  int x = p.x;
+  int y = p.y;
+  
+  if (x < 0 || y < 0 || x >= width || y >= height) return;
+  frameBuffer[y * width + x] =
+    (color .a << 24) | (color .b << 16) | (color .g << 8) | color.r;
+}
+
+void putLine(u32* frameBuffer, int width, int height, vec2D p1, vec2D p2, RGBA c) {
+  int dx = abs(p2.x - p1.x);
+  int dy = abs(p2.y - p1.y);
+
+  int incrementer_x = (p2.x > p1.x) ? 1 : -1;
+  int incrementer_y = (p2.y > p1.y) ? 1 : -1;
+
+  if (dy <= dx) {
+    int desPar = 2 * dy - dx;
+    for (int i = 0; i <= dx; ++i) {
+      putPixel(frameBuffer, width, height, p1, c);
+      p1.x += incrementer_x;
+      if (desPar < 0) {
+        desPar += 2 * dy;
+      } else {
+        desPar += 2 * dy - 2 * dx;
+        p1.y += incrementer_y;
+      }
+    }
+  } else {
+    int desPar = 2 * dx - dy;
+    for (int i = 0; i <= dy; ++i) {
+      putPixel(frameBuffer, width, height, p1, c);
+      p1.y += incrementer_y;
+      if (desPar < 0) {
+        desPar += 2 * dx;
+      } else {
+        desPar += 2 * dx - 2 * dy;
+        p1.x += incrementer_x;
+      }
+    }
+  }
+}
