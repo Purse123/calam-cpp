@@ -45,7 +45,7 @@ int main() {
   u32* frameBuffer = new u32[WIDTH * HEIGHT];
   memset(frameBuffer, 0, WIDTH * HEIGHT * sizeof(u32));
   
-  vec2D p = {100, 200};
+  vec2D p = {300, 100};
   RGBA cyan = {0, 255, 255, 255};
   putPixel (frameBuffer, p, cyan);
 
@@ -76,7 +76,24 @@ int main() {
   SDL_RenderCopy(renderer, texture, NULL, NULL);
   SDL_RenderPresent(renderer);
 
-  SDL_Delay(2000);
+  vec2D ellipse_center = {200, 200};
+  vec2D ellipse_radius = {100, 50};
+  putEllipse (frameBuffer, ellipse_center, ellipse_radius, cyan);
+  SDL_UpdateTexture(texture, NULL, frameBuffer, WIDTH * sizeof(uint32_t));
+  SDL_RenderClear(renderer);
+  SDL_RenderCopy(renderer, texture, NULL, NULL);
+  SDL_RenderPresent(renderer);
+  
+  vec2D t_p1 = {350, 350};
+  vec2D t_p2 = {650, 350};
+  vec2D t_p3 = {500, 500};
+  putTriangle (frameBuffer, t_p1, t_p2, t_p3, cyan);
+  SDL_UpdateTexture(texture, NULL, frameBuffer, WIDTH * sizeof(uint32_t));
+  SDL_RenderClear(renderer);
+  SDL_RenderCopy(renderer, texture, NULL, NULL);
+  SDL_RenderPresent(renderer);
+  
+  SDL_Delay(5000);
 
   delete[] frameBuffer;
   SDL_DestroyTexture(texture);

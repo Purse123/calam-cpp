@@ -20,6 +20,8 @@ struct RGBA {
 void display (void);
 void putPixel (u32* frameBuffer, vec2D p, RGBA color);
 void putLine (u32* frameBuffer, vec2D p1, vec2D p2, RGBA c);
+void putTriangle (u32* frameBuffer, vec2D p1, vec2D p2, vec2D p3, RGBA c);
 void putCircle (u32* frameBuffer, vec2D center, int radius, RGBA c);
+void putEllipse (u32* frameBuffer, vec2D center, vec2D radius, RGBA c);
 
 #endif
