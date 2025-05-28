@@ -1,20 +1,14 @@
-#include <iostream>
 #include "calam.h"
 
-void display(void) {
-  std::cout << "Hello world" << std::endl;
-}
+Calam::Calam(Canvas &canvas) : canvas(canvas) {}
 
-void putPixel(u32* frameBuffer, vec2D p, RGBA color) {
-  int x = p.x;
-  int y = p.y;
-  
-  if (x < 0 || y < 0 || x >= WIDTH || y >= HEIGHT) return;
-  frameBuffer[y * WIDTH + x] =
+void Calam::putPixel(vec2D p, RGBA color) {
+  if (p.x < 0 || p.y < 0 || p.x >= canvas.getWidth() || p.y >= canvas.getHeight()) return;
+  canvas.getBuffer()[p.y * canvas.getWidth() + p.x] =
     (color .a << 24) | (color .b << 16) | (color .g << 8) | color.r;
 }
 
-void putLine(u32* frameBuffer, vec2D p1, vec2D p2, RGBA c) {
+void Calam::putLine(vec2D p1, vec2D p2, RGBA c) {
   int dx = abs(p2.x - p1.x);
   int dy = abs(p2.y - p1.y);
 
@@ -24,7 +18,7 @@ void putLine(u32* frameBuffer, vec2D p1, vec2D p2, RGBA c) {
   if (dy <= dx) {
     int desPar = 2 * dy - dx;
     for (int i = 0; i <= dx; ++i) {
-      putPixel(frameBuffer, p1, c);
+      putPixel(p1, c);
       p1.x += incrementer_x;
       if (desPar < 0) {
         desPar += 2 * dy;
@@ -36,7 +30,7 @@ void putLine(u32* frameBuffer, vec2D p1, vec2D p2, RGBA c) {
   } else {
     int desPar = 2 * dx - dy;
     for (int i = 0; i <= dy; ++i) {
-      putPixel(frameBuffer, p1, c);
+      putPixel(p1, c);
       p1.y += incrementer_y;
       if (desPar < 0) {
         desPar += 2 * dx;
@@ -48,31 +42,29 @@ void putLine(u32* frameBuffer, vec2D p1, vec2D p2, RGBA c) {
   }
 }
 
-void putTriangle (u32* frameBuffer, vec2D p1, vec2D p2, vec2D p3, RGBA c) {
-  putLine(frameBuffer, p1, p2, c);
-  putLine(frameBuffer, p3, p2, c);
-  putLine(frameBuffer, p1, p3, c);
+void Calam::putTriangle (vec2D p1, vec2D p2, vec2D p3, RGBA c) {
+  putLine(p1, p2, c);
+  putLine(p3, p2, c);
+  putLine(p1, p3, c);
 }
 
-void EightSegSymmetry(u32* frameBuffer, vec2D center, int x, int y, RGBA c) {
-  putPixel (frameBuffer, {center.x + x, center.y + y}, c);
-  putPixel (frameBuffer, {center.x - x, center.y + y}, c);
-  putPixel (frameBuffer, {center.x + x, center.y - y}, c);
-  putPixel (frameBuffer, {center.x - x, center.y - y}, c);
 
-  putPixel (frameBuffer, {center.x + y, center.y + x}, c);
-  putPixel (frameBuffer, {center.x - y, center.y + x}, c);
-  putPixel (frameBuffer, {center.x + y, center.y - x}, c);
-  putPixel (frameBuffer, {center.x - y, center.y - x}, c);
-}
-
-void putCircle (u32* frameBuffer, vec2D center, int radius, RGBA c) {
+void Calam::putCircle (vec2D center, int radius, RGBA c) {
   int x = 0;
   int y = radius;
   int p0 = 1 - radius;
 
   while (x <= y) {
-    EightSegSymmetry(frameBuffer, center, x, y, c);
+    putPixel ({center.x + x, center.y + y}, c);
+    putPixel ({center.x - x, center.y + y}, c);
+    putPixel ({center.x + x, center.y - y}, c);
+    putPixel ({center.x - x, center.y - y}, c);
+
+    putPixel ({center.x + y, center.y + x}, c);
+    putPixel ({center.x - y, center.y + x}, c);
+    putPixel ({center.x + y, center.y - x}, c);
+    putPixel ({center.x - y, center.y - x}, c);
+
     if (p0 < 0)
       p0 += 2 * x + 1;
     else {
@@ -83,14 +75,7 @@ void putCircle (u32* frameBuffer, vec2D center, int radius, RGBA c) {
   }
 }
 
-void plot_ellipse_points (u32* frameBuffer, vec2D center, int x, int y, RGBA c) {
-  putPixel (frameBuffer, {center.x + x, center.y + y}, c);
-  putPixel (frameBuffer, {center.x - x, center.y + y}, c);
-  putPixel (frameBuffer, {center.x + x, center.y - y}, c);
-  putPixel (frameBuffer, {center.x - x, center.y - y}, c);
-}
-
-void putEllipse (u32* frameBuffer, vec2D center, vec2D radius, RGBA c) {
+void Calam::putEllipse (vec2D center, vec2D radius, RGBA c) {
   int x = 0, y = radius.y;
 
   // initial paramter for region 1
@@ -102,7 +87,10 @@ void putEllipse (u32* frameBuffer, vec2D center, vec2D radius, RGBA c) {
   int dy = 2 * pow(radius.x, 2) * y;
 
   while (dx < dy) {
-    plot_ellipse_points(frameBuffer, center, x, y, c);
+    putPixel ({center.x + x, center.y + y}, c);
+    putPixel ({center.x - x, center.y + y}, c);
+    putPixel ({center.x + x, center.y - y}, c);
+    putPixel ({center.x - x, center.y - y}, c);
 
     x++;
     if (p10 < 0) {
@@ -122,7 +110,10 @@ void putEllipse (u32* frameBuffer, vec2D center, vec2D radius, RGBA c) {
           + pow(radius.x, 2) * pow(y - 1, 2)
           - pow(radius.x, 2) * pow(radius.y, 2);
   while (y >= 0) {
-    plot_ellipse_points(frameBuffer, center, x, y, c);
+    putPixel ({center.x + x, center.y + y}, c);
+    putPixel ({center.x - x, center.y + y}, c);
+    putPixel ({center.x + x, center.y - y}, c);
+    putPixel ({center.x - x, center.y - y}, c);
 
     y--;
     if (p20 > 0) {

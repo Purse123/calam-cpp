@@ -3,25 +3,24 @@
 
 #include <cstdint>
 #include <SDL2/SDL.h>
+#include "Canvas.h"
+#include <iostream>
 
-#define FACTOR 90
-#define WIDTH (16 * FACTOR)
-#define HEIGHT (9 * FACTOR)
+struct vec2D { int x, y; };
+struct RGBA { u32 r, g, b, a; };
 
-using u32 = std::uint32_t;
-struct vec2D {
-  int x, y;
+class Calam {
+ public:
+  Calam(Canvas &canvas);
+  
+  void putPixel (vec2D p, RGBA color);
+  void putLine (vec2D p1, vec2D p2, RGBA c);
+  void putTriangle (vec2D p1, vec2D p2, vec2D p3, RGBA c);
+  void putCircle (vec2D center, int radius, RGBA c);
+  void putEllipse (vec2D center, vec2D radius, RGBA c);
+
+ private:
+  Canvas &canvas;
 };
-
-struct RGBA {
-  u32 r, g, b, a;
-};
-
-void display (void);
-void putPixel (u32* frameBuffer, vec2D p, RGBA color);
-void putLine (u32* frameBuffer, vec2D p1, vec2D p2, RGBA c);
-void putTriangle (u32* frameBuffer, vec2D p1, vec2D p2, vec2D p3, RGBA c);
-void putCircle (u32* frameBuffer, vec2D center, int radius, RGBA c);
-void putEllipse (u32* frameBuffer, vec2D center, vec2D radius, RGBA c);
-
+  
 #endif

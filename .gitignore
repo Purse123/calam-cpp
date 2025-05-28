@@ -31,5 +31,6 @@
 *.out
 *.app
 
-# Temp files
+# Other files
 temp.c
+Canvas.cpp
