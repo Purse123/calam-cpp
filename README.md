@@ -19,11 +19,11 @@
 - C++ compiler (supports C++11 or later)
 - [SDL2](https://libsdl.org/) development libraries
 
-# ✅ TODOs
+## ✅ TODOs
 - [ ] Add filled versions of shapes
 - [ ] Add support for input handling
 - [ ] Add double buffering / animations
 - [ ] Add image export
 
-# 📜 License
+## 📜 License
 This project is open source and released under the MIT License.
