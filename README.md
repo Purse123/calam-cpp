@@ -15,7 +15,7 @@
 - Encourages use of custom `Canvas` abstraction
 - Header-only style with minimal external dependencies
 
-## 🧱 Requirements
+## ❗ Requirements
 - C++ compiler (supports C++11 or later)
 - [SDL2](https://libsdl.org/) development libraries
 
