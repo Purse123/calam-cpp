@@ -42,12 +42,69 @@ void Calam::putLine(vec2D p1, vec2D p2, RGBA c) {
   }
 }
 
+void Calam::putRect(vec2D p1, vec2D p2, RGBA c) {
+  putLine(p1, {p2.x, p1.y}, c);
+  putLine(p1, {p1.x, p2.y}, c);
+  putLine(p2, {p1.x, p2.y}, c);
+  putLine(p2, {p2.x, p1.y}, c);
+}
+
+void Calam::putFillRect(vec2D p1, vec2D p2, RGBA c) {
+  int x1 = std::min(p1.x, p2.x);
+  int y1 = std::min(p1.y, p2.y);
+  int x2 = std::max(p1.x, p2.x);
+  int y2 = std::max(p1.y, p2.y);
+
+  x1 = std::max(0, x1);
+  y1 = std::max(0, y1);
+  x2 = std::min(canvas.getWidth(), x2);
+  y2 = std::min(canvas.getHeight(), y2);
+
+  for (int y = y1; y < y2; y++) {
+    for (int x = x1; x < x2; x++) {
+      putPixel({x, y}, c);
+    }
+  }
+}
+
+
 void Calam::putTriangle (vec2D p1, vec2D p2, vec2D p3, RGBA c) {
   putLine(p1, p2, c);
   putLine(p3, p2, c);
   putLine(p1, p3, c);
 }
 
+void Calam::putFillTriangle (vec2D v0, vec2D v1, vec2D v2, RGBA c) {
+  if (v1.y < v0.y) std::swap(v0, v1);
+  if (v2.y < v0.y) std::swap(v0, v2);
+  if (v2.y < v1.y) std::swap(v1, v2);
+
+  auto edgeInterp = [](int y0, int y1, int x0, int x1, int y) {
+    if (y1 == y0) return x0;
+    return x0 + (x1 - x0) * (y - y0) / (y1 - y0);
+  };
+
+  auto drawScanline = [&](int y, int xStart, int xEnd) {
+    if (xStart > xEnd) std::swap(xStart, xEnd);
+    for (int x = xStart; x <= xEnd; x++) {
+      putPixel({x, y}, c);
+    }
+  };
+
+    // Fill bottom part (v0-v1-v2)
+  for (int y = v0.y; y <= v1.y; y++) {
+    int xa = edgeInterp(v0.y, v1.y, v0.x, v1.x, y);
+    int xb = edgeInterp(v0.y, v2.y, v0.x, v2.x, y);
+    drawScanline(y, xa, xb);
+  }
+
+  // Fill top part (v1-v2)
+  for (int y = v1.y + 1; y <= v2.y; y++) {
+    int xa = edgeInterp(v1.y, v2.y, v1.x, v2.x, y);
+    int xb = edgeInterp(v0.y, v2.y, v0.x, v2.x, y);
+    drawScanline(y, xa, xb);
+  }
+}
 
 void Calam::putCircle (vec2D center, int radius, RGBA c) {
   int x = 0;

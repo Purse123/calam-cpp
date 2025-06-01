@@ -20,7 +20,8 @@
 - [SDL2](https://libsdl.org/) development libraries
 
 ## ✅ TODOs
-- [ ] Add filled versions of shapes
+- [ ] Filled circle and ellipse
+- [ ] Seperate RayCasting engine
 - [ ] Add support for input handling
 - [ ] Add double buffering / animations
 - [ ] Add image export

@@ -15,7 +15,10 @@ class Calam {
   
   void putPixel (vec2D p, RGBA color);
   void putLine (vec2D p1, vec2D p2, RGBA c);
+  void putFillRect(vec2D p1, vec2D p2, RGBA c);
+  void putRect (vec2D p1, vec2D p2, RGBA c);
   void putTriangle (vec2D p1, vec2D p2, vec2D p3, RGBA c);
+  void putFillTriangle (vec2D p1, vec2D p2, vec2D p3, RGBA c);
   void putCircle (vec2D center, int radius, RGBA c);
   void putEllipse (vec2D center, vec2D radius, RGBA c);
 
