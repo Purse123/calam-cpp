@@ -32,5 +32,5 @@
 *.app
 
 # Other files
-temp.c
-Canvas.cpp
+*~
+example_with_C.c
