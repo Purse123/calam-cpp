@@ -1,6 +1,14 @@
+// TODOS:
+// 1. Loading map with text file
+// 2. Multiple map levels
+// 3. Draw player's position (maybe FOV too)
+
 #pragma once
 #include "calam.h"
 #include "Canvas.h"
+
+#define GRIDCOLS 10
+#define GRIDROWS 10
 
 class GridRenderer {
  public:
@@ -9,35 +17,20 @@ class GridRenderer {
     tileWidth = canvas.getWidth() / cols;
     tileHeight = canvas.getHeight() / rows;
   }
-  /*  
-  void draw(int* world, RGBA wallColor, RGBA floorColor) {
-    for (int y = 0; y < rows; ++y) {
-      for (int x = 0; x < cols; ++x) {
-	int value = world[y * cols + x];
-	RGBA color = (value == 1) ? wallColor : floorColor;
 
-	int w = (x == cols - 1) ? canvas.getWidth() - tileWidth * x: tileWidth;
-	int h = (y == rows - 1) ? canvas.getHeight() - tileHeight * y: tileHeight;
-
-	// calam.putFillRect({tileWidth * x, tileHeight * y}, {w, h}, color);
-	calam.putRect({tileWidth * x, tileHeight * y}, {w, h}, color);
-      }
-    }
-  }
-  */
-  void draw(int* world, RGBA wallColor, RGBA floorColor) {
+  void draw_minimap (int world[GRIDCOLS][GRIDROWS], RGBA wallColor, RGBA floorColor) {
     for (int row = 0; row <= rows; ++row) {
       for (int col = 0; col <= cols; ++col) {
-	int value = world[row * cols + col];
+	int value = world[row][col];
 	RGBA color = (value == 1) ? wallColor : floorColor;
 
 	int x = col * tileWidth;
 	int y = row * tileHeight;
 
-	int w = (col == cols - 1) ? canvas.getWidth() - x : tileWidth;
-	int h = (row == rows - 1) ? canvas.getHeight() - y : tileHeight;
+	int w = canvas.getWidth();
+	int h = canvas.getHeight();
 
-	calam.putRect({x, y}, {w, h}, color);
+	calam.putFillRect({x, y}, {w, h}, color);
       }
     }
   }

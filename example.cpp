@@ -1,5 +1,5 @@
-#include "calam.h"
 #include <iostream>
+#include "calam.h"
 
 #define FACTOR 90
 #define WIDTH (16 * FACTOR)
@@ -23,7 +23,7 @@ int main() {
   vec2D rect_p1 = {600, 400};
   vec2D rect_p2 = {700, 500};
   cfx.putRect (rect_p1, rect_p2, cyan); // make rectangle
-  cfx.putFillRect (rect_p1, rect_p2, cyan);
+  cfx.putFillRect ({ 0, 0}, {50, 50}, cyan);
 
   // triangle
   vec2D t_p1 = {350, 350};
@@ -41,11 +41,13 @@ int main() {
   vec2D ellipse_center = {200, 200};
   vec2D ellipse_radius = {100, 50};
   cfx.putEllipse (ellipse_center, ellipse_radius, cyan);
+
+  cfx.calam_save_to_ppm (canvas.getBuffer(), WIDTH, HEIGHT);
   
   canvas.clear();		// clear back buffer
   canvas.update();		// update texture in section
   canvas.present();		// swap the buffer
       
-  SDL_Delay(5000);
+  SDL_Delay(1000);
   return 0;
 }

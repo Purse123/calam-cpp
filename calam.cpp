@@ -184,3 +184,28 @@ void Calam::putEllipse (vec2D center, vec2D radius, RGBA c) {
     }
   }
 }
+
+/*
+// Portable Pixel Map
+Errno Calam::calam_save_to_ppm (int width, int height) {
+  Errno resultNo;
+    
+  FILE *fp = fopen("output.ppm", "wb");
+  if (fp == NULL) return_defer(-1);
+
+  fprintf(fp, "P6\n%zu %zu\n255\n", width, height);
+  if (ferror(fp)) return_defer(-1);
+
+  u32 *frameBuffer = canvas_getBuffer(canvas);
+  for (int i = 0; i < canvas_getWidth(canvas) * canvas_getHeight(canvas); i++) {
+    fputc((buf[i] >> 8 * 0) & 0xFF, fp);  // r
+    fputc((buf[i] >> 8 * 1) & 0xFF, fp);  // g
+    fputc((buf[i] >> 8 * 2) & 0xFF, fp);  // b
+  }
+  if (ferror(fp)) return_defer(-1);
+
+ defer_return:
+  if (fp) fclose(fp);
+  return resultNo;
+}
+*/

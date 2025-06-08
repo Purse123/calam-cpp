@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iostream>
+#include <fstream>
 
 typedef uint32_t u32;
 
