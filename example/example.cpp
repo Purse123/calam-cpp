@@ -1,5 +1,5 @@
 #include <iostream>
-#include "calam.h"
+#include "../include/calam.h"
 
 #define FACTOR 90
 #define WIDTH (16 * FACTOR)
@@ -42,8 +42,6 @@ int main() {
   vec2D ellipse_radius = {100, 50};
   cfx.putEllipse (ellipse_center, ellipse_radius, cyan);
 
-  cfx.calam_save_to_ppm (canvas.getBuffer(), WIDTH, HEIGHT);
-  
   canvas.clear();		// clear back buffer
   canvas.update();		// update texture in section
   canvas.present();		// swap the buffer
