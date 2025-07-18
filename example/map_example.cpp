@@ -37,6 +37,6 @@ int main() {
   canvas.update();
   canvas.present();
 
-  SDL_Delay(2000);
+  SDL_Delay(9000);
   return 0;
 }
