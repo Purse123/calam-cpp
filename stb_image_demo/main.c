@@ -45,7 +45,7 @@ i32 main(i32 argc, c8 **argv) {
   }
 
   for (int y = 0; y < height; y++) {
-    for (int x = 0; y < width; x++) {
+    for (int x = 0; x < width; x++) {
       int index = (y * width + x) * 4; // 4 for channels RGBA
       
       u8 r = data[index + 0];
